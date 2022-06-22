@@ -24,9 +24,10 @@ import (
 	"os"
 
 	log "github.com/golang/glog"
-	"google.golang.org/protobuf/encoding/prototext"
 	"github.com/protocolbuffers/txtpbfmt/parser"
+	"google.golang.org/protobuf/encoding/prototext"
 
+	gpb "github.com/openconfig/gnmi/proto/gnmi"
 	fpb "github.com/openconfig/gnmi/testing/fake/proto"
 )
 
@@ -36,17 +37,35 @@ var (
 
 	config = &fpb.Config{
 		Target: "fake target name",
-		Seed:   12345,
 		Values: []*fpb.Value{
 			{
-				Path:   []string{"a", "b"},
+				Path:   &gpb.Path{Elem: []*gpb.PathElem{{Name: "a"}, {Name: "b"}}},
 				Repeat: 3,
 				Value:  &fpb.Value_IntValue{&fpb.IntValue{Value: 4}},
 			},
 			{
-				Path:   []string{"b", "c"},
+				Path:   &gpb.Path{Elem: []*gpb.PathElem{{Name: "b"}, {Name: "c"}}},
 				Repeat: 5,
 				Value:  &fpb.Value_StringValue{&fpb.StringValue{Value: "foo"}},
+			},
+			{
+				Path: &gpb.Path{Elem: []*gpb.PathElem{
+					{Name: "interfaces"},
+					{Name: "interface[name=Port-Channel1]"},
+					{Name: "state"},
+					{Name: "counters"},
+					{Name: "in-octets"},
+				}},
+				Value: &fpb.Value_IntValue{&fpb.IntValue{
+					Value: 0,
+					Distribution: &fpb.IntValue_Range{
+						&fpb.IntRange{
+							Minimum:  0,
+							Maximum:  10000000,
+							DeltaMax: 100,
+							DeltaMin: 0,
+						}}}},
+				Repeat: 2,
 			},
 		},
 		DisableSync: false,

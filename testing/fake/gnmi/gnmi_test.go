@@ -17,20 +17,20 @@ limitations under the License.
 package gnmi
 
 import (
-	"golang.org/x/net/context"
 	"crypto/tls"
 	"errors"
 	"fmt"
+	"golang.org/x/net/context"
 	"io"
 	"strings"
 	"sync"
 	"testing"
 
 	"github.com/kylelemons/godebug/pretty"
+	"github.com/openconfig/gnmi/testing/fake/testing/grpc/config"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc"
-	"github.com/openconfig/gnmi/testing/fake/testing/grpc/config"
 
 	gnmipb "github.com/openconfig/gnmi/proto/gnmi"
 	fpb "github.com/openconfig/gnmi/testing/fake/proto"
@@ -163,7 +163,13 @@ func TestClientCreate(t *testing.T) {
 		Target: "arista",
 		Port:   -1,
 		Values: []*fpb.Value{{
-			Path: []string{"interfaces", "interface[name=Port-Channel1]", "state", "counters", "in-octets"},
+			Path: &gnmipb.Path{Elem: []*gnmipb.PathElem{
+				{Name: "interfaces"},
+				{Name: "interface[name=Port-Channel1]"},
+				{Name: "state"},
+				{Name: "counters"},
+				{Name: "in-octets"},
+			}},
 			Value: &fpb.Value_IntValue{&fpb.IntValue{
 				Value: 0,
 				Distribution: &fpb.IntValue_Range{
@@ -223,7 +229,13 @@ func TestClientCreate(t *testing.T) {
 			Target: "arista",
 			Port:   -1,
 			Values: []*fpb.Value{{
-				Path: []string{"interfaces", "interface[name=Port-Channel1]", "state", "counters", "in-octets"},
+				Path: &gnmipb.Path{Elem: []*gnmipb.PathElem{
+					{Name: "interfaces"},
+					{Name: "interface[name=Port-Channel1]"},
+					{Name: "state"},
+					{Name: "counters"},
+					{Name: "in-octets"},
+				}},
 				Value: &fpb.Value_IntValue{&fpb.IntValue{
 					Value: 0,
 					Distribution: &fpb.IntValue_Range{
@@ -290,7 +302,13 @@ func festClientSend(t *testing.T) {
 			Target: "arista",
 			Port:   -1,
 			Values: []*fpb.Value{{
-				Path: []string{"interfaces", "interface[name=Port-Channel1]", "state", "counters", "in-octets"},
+				Path: &gnmipb.Path{Elem: []*gnmipb.PathElem{
+					{Name: "interfaces"},
+					{Name: "interface[name=Port-Channel1]"},
+					{Name: "state"},
+					{Name: "counters"},
+					{Name: "in-octets"},
+				}},
 				Value: &fpb.Value_IntValue{&fpb.IntValue{
 					Value: 0,
 					Distribution: &fpb.IntValue_Range{
@@ -377,7 +395,13 @@ func TestNewAgent(t *testing.T) {
 			Target: "arista",
 			Port:   -1,
 			Values: []*fpb.Value{{
-				Path: []string{"interfaces", "interface[name=Port-Channel1]", "state", "counters", "in-octets"},
+				Path: &gnmipb.Path{Elem: []*gnmipb.PathElem{
+					{Name: "interfaces"},
+					{Name: "interface[name=Port-Channel1]"},
+					{Name: "state"},
+					{Name: "counters"},
+					{Name: "in-octets"},
+				}},
 				Value: &fpb.Value_IntValue{&fpb.IntValue{
 					Value: 0,
 					Distribution: &fpb.IntValue_Range{
@@ -396,7 +420,13 @@ func TestNewAgent(t *testing.T) {
 			Port:        -1,
 			DisableSync: true,
 			Values: []*fpb.Value{{
-				Path: []string{"interfaces", "interface[name=Port-Channel1]", "state", "counters", "in-octets"},
+				Path: &gnmipb.Path{Elem: []*gnmipb.PathElem{
+					{Name: "interfaces"},
+					{Name: "interface[name=Port-Channel1]"},
+					{Name: "state"},
+					{Name: "counters"},
+					{Name: "in-octets"},
+				}},
 				Value: &fpb.Value_IntValue{&fpb.IntValue{
 					Value: 0,
 					Distribution: &fpb.IntValue_Range{

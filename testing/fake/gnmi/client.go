@@ -23,9 +23,9 @@ import (
 
 	log "github.com/golang/glog"
 	"github.com/kylelemons/godebug/pretty"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc"
 	"github.com/openconfig/gnmi/testing/fake/queue"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 
 	gpb "github.com/openconfig/gnmi/proto/gnmi"
 	fpb "github.com/openconfig/gnmi/testing/fake/proto"
@@ -278,7 +278,7 @@ func valToResp(val *fpb.Value) (*gpb.SubscribeResponse, error) {
 			Response: &gpb.SubscribeResponse_Update{
 				Update: &gpb.Notification{
 					Timestamp: val.Timestamp.Timestamp,
-					Delete:    []*gpb.Path{{Element: val.Path}},
+					Delete:    []*gpb.Path{val.Path},
 				},
 			},
 		}, nil
@@ -303,7 +303,7 @@ func valToResp(val *fpb.Value) (*gpb.SubscribeResponse, error) {
 					Timestamp: val.Timestamp.Timestamp,
 					Update: []*gpb.Update{
 						{
-							Path: &gpb.Path{Element: val.Path},
+							Path: val.Path,
 							Val:  tv,
 						},
 					},

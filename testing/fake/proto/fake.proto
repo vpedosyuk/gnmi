@@ -103,7 +103,7 @@ message DeleteValue {}
 // device for integration tests.
 message Value {
   // The device specific, or OpenConfig path corresponding to a value.
-  repeated string path = 1;
+  gnmi.Path path = 1;
   // The initial timestamp and configuration on how the timestamp will change
   // for subsequent values. If timestamp is not set the default will assume to
   // be the current system time.
